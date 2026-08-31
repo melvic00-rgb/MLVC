@@ -1,0 +1,2084 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+
+<meta name="theme-color" content="#07090d">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<title>Melvic Music</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --bg:#07090d;
+  --card:#10141b;
+  --card2:#171c24;
+  --line:rgba(255,255,255,.07);
+  --text:#f7f9fc;
+  --muted:#89919e;
+  --blue:#3d96ff;
+  --blue2:#126de0;
+  --danger:#ff5570;
+}
+
+html{
+  background:var(--bg);
+}
+
+body{
+  min-height:100vh;
+  color:var(--text);
+  background:
+    radial-gradient(circle at 50% -10%,rgba(61,150,255,.16),transparent 35%),
+    var(--bg);
+  font-family:
+    Inter,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+  padding-bottom:150px;
+}
+
+button{
+  border:0;
+  outline:0;
+  cursor:pointer;
+  color:inherit;
+  font-family:inherit;
+}
+
+input{
+  font-family:inherit;
+}
+
+.app{
+  width:min(1050px,100%);
+  margin:auto;
+  padding:20px 16px;
+}
+
+/* HEADER */
+
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:20px;
+}
+
+.logo{
+  display:flex;
+  align-items:center;
+  gap:11px;
+}
+
+.logoIcon{
+  width:44px;
+  height:44px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(145deg,var(--blue),var(--blue2));
+  box-shadow:0 10px 30px rgba(61,150,255,.25);
+  font-size:22px;
+}
+
+.logoText{
+  font-size:19px;
+  font-weight:800;
+  letter-spacing:-.5px;
+}
+
+.logoText span{
+  color:var(--blue);
+}
+
+.addBtn{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  background:var(--blue);
+  padding:12px 16px;
+  border-radius:14px;
+  font-weight:750;
+  font-size:13px;
+  transition:.2s;
+}
+
+.addBtn:hover{
+  filter:brightness(1.08);
+  transform:translateY(-1px);
+}
+
+.addBtn:active{
+  transform:scale(.96);
+}
+
+/* SEARCH */
+
+.search{
+  position:relative;
+  margin-bottom:20px;
+}
+
+.search input{
+  width:100%;
+  height:50px;
+  border-radius:16px;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.045);
+  color:white;
+  outline:none;
+  padding:0 17px 0 45px;
+}
+
+.search input:focus{
+  border-color:rgba(61,150,255,.45);
+  box-shadow:0 0 0 3px rgba(61,150,255,.08);
+}
+
+.searchIcon{
+  position:absolute;
+  left:17px;
+  top:50%;
+  transform:translateY(-50%);
+  color:var(--muted);
+  font-size:20px;
+}
+
+/* HERO */
+
+.hero{
+  position:relative;
+  overflow:hidden;
+  border:1px solid var(--line);
+  border-radius:27px;
+  padding:25px;
+  margin-bottom:28px;
+  background:
+    linear-gradient(135deg,rgba(61,150,255,.14),rgba(255,255,255,.025)),
+    var(--card);
+}
+
+.hero:after{
+  content:"♫";
+  position:absolute;
+  right:30px;
+  bottom:-20px;
+  font-size:130px;
+  opacity:.035;
+}
+
+.heroSmall{
+  color:var(--blue);
+  font-size:11px;
+  font-weight:800;
+  letter-spacing:1.3px;
+  margin-bottom:8px;
+}
+
+.hero h1{
+  font-size:clamp(28px,6vw,43px);
+  line-height:1.04;
+  letter-spacing:-1.8px;
+}
+
+.hero p{
+  color:var(--muted);
+  font-size:13px;
+  margin-top:11px;
+  max-width:550px;
+  line-height:1.6;
+}
+
+/* SECTION */
+
+.sectionHead{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:12px;
+}
+
+.sectionHead h2{
+  font-size:20px;
+}
+
+.count{
+  color:var(--muted);
+  font-size:12px;
+}
+
+/* LIBRARY */
+
+.library{
+  display:grid;
+  gap:8px;
+}
+
+.song{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:9px;
+  border:1px solid transparent;
+  border-radius:17px;
+  cursor:pointer;
+  transition:.18s;
+}
+
+.song:hover{
+  background:rgba(255,255,255,.045);
+  border-color:var(--line);
+}
+
+.song.active{
+  background:rgba(61,150,255,.09);
+  border-color:rgba(61,150,255,.18);
+}
+
+.cover{
+  width:55px;
+  height:55px;
+  flex:0 0 55px;
+  border-radius:14px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  background:linear-gradient(145deg,#252c37,#0d1015);
+  color:#6e7785;
+  font-size:21px;
+}
+
+.cover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.songInfo{
+  min-width:0;
+  flex:1;
+}
+
+.songTitle{
+  font-size:14px;
+  font-weight:750;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.songArtist{
+  margin-top:4px;
+  color:var(--muted);
+  font-size:11px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.songActions{
+  display:flex;
+  align-items:center;
+}
+
+.iconBtn{
+  width:37px;
+  height:37px;
+  border-radius:11px;
+  background:transparent;
+  color:var(--muted);
+  display:grid;
+  place-items:center;
+  font-size:17px;
+}
+
+.iconBtn:hover{
+  background:rgba(255,255,255,.07);
+  color:white;
+}
+
+.favorite.active{
+  color:var(--danger);
+}
+
+/* EMPTY */
+
+.empty{
+  padding:60px 20px;
+  text-align:center;
+  border:1px dashed rgba(255,255,255,.1);
+  border-radius:22px;
+}
+
+.emptyIcon{
+  font-size:43px;
+  margin-bottom:12px;
+}
+
+.empty h3{
+  font-size:16px;
+  margin-bottom:6px;
+}
+
+.empty p{
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+
+/* PLAYER */
+
+.player{
+  position:fixed;
+  z-index:100;
+  left:50%;
+  bottom:9px;
+  transform:translateX(-50%);
+  width:min(760px,calc(100% - 12px));
+  padding:13px 15px 14px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:24px;
+  background:rgba(14,17,23,.94);
+  backdrop-filter:blur(25px);
+  -webkit-backdrop-filter:blur(25px);
+  box-shadow:0 18px 55px rgba(0,0,0,.55);
+}
+
+.progressArea{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.time{
+  min-width:32px;
+  color:var(--muted);
+  font-size:9px;
+}
+
+input[type="range"]{
+  flex:1;
+  height:4px;
+  appearance:none;
+  -webkit-appearance:none;
+  background:#303640;
+  border-radius:99px;
+  outline:none;
+}
+
+input[type="range"]::-webkit-slider-thumb{
+  appearance:none;
+  -webkit-appearance:none;
+  width:13px;
+  height:13px;
+  border-radius:50%;
+  background:#fff;
+}
+
+input[type="range"]::-moz-range-thumb{
+  width:13px;
+  height:13px;
+  border:0;
+  border-radius:50%;
+  background:#fff;
+}
+
+.playerMain{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:11px;
+}
+
+.playerCover{
+  width:52px;
+  height:52px;
+  flex:0 0 52px;
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  border-radius:14px;
+  background:linear-gradient(145deg,#242b36,#0c0f14);
+  font-size:20px;
+}
+
+.playerCover img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.now{
+  min-width:0;
+  flex:1;
+}
+
+.nowTitle{
+  font-size:13px;
+  font-weight:800;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.nowArtist{
+  color:var(--muted);
+  font-size:10px;
+  margin-top:3px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.controls{
+  display:flex;
+  align-items:center;
+  gap:3px;
+}
+
+.control{
+  width:39px;
+  height:39px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:transparent;
+  color:#d6dae0;
+  font-size:14px;
+}
+
+.control:hover{
+  background:rgba(255,255,255,.07);
+}
+
+.play{
+  width:46px;
+  height:46px;
+  background:white;
+  color:#07090d;
+  font-size:18px;
+}
+
+.play:hover{
+  background:white;
+  transform:scale(1.04);
+}
+
+.smallControls{
+  display:flex;
+  gap:2px;
+}
+
+.activeControl{
+  color:var(--blue);
+}
+
+.volume{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  width:100px;
+}
+
+.volume input{
+  width:65px;
+}
+
+/* TOAST */
+
+.toast{
+  position:fixed;
+  z-index:300;
+  left:50%;
+  bottom:110px;
+  transform:translate(-50%,20px);
+  opacity:0;
+  pointer-events:none;
+  padding:10px 15px;
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#1c212a;
+  font-size:12px;
+  box-shadow:0 10px 30px rgba(0,0,0,.35);
+  transition:.25s;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translate(-50%,0);
+}
+
+#fileInput{
+  display:none;
+}
+
+/* INSTALL */
+
+.install{
+  display:none;
+  align-items:center;
+  gap:12px;
+  padding:13px;
+  margin-bottom:18px;
+  border:1px solid rgba(61,150,255,.2);
+  border-radius:17px;
+  background:rgba(61,150,255,.07);
+}
+
+.install.show{
+  display:flex;
+}
+
+.installText{
+  flex:1;
+  font-size:12px;
+}
+
+.installText strong{
+  display:block;
+  margin-bottom:3px;
+}
+
+.installText span{
+  color:var(--muted);
+  font-size:10px;
+}
+
+.install button{
+  padding:9px 13px;
+  border-radius:11px;
+  background:var(--blue);
+  font-size:11px;
+  font-weight:800;
+}
+
+/* MOBILE */
+
+@media(max-width:650px){
+
+  .app{
+    padding:17px 13px;
+  }
+
+  .logoText{
+    font-size:17px;
+  }
+
+  .logoIcon{
+    width:41px;
+    height:41px;
+  }
+
+  .addBtn{
+    padding:11px 13px;
+  }
+
+  .hero{
+    padding:21px;
+    border-radius:22px;
+  }
+
+  .hero h1{
+    font-size:29px;
+  }
+
+  .volume{
+    display:none;
+  }
+
+  .smallControls{
+    display:none;
+  }
+
+  .controls .prev,
+  .controls .next{
+    display:none;
+  }
+
+  .player{
+    padding:11px 11px 13px;
+  }
+
+  .playerCover{
+    width:48px;
+    height:48px;
+    flex-basis:48px;
+  }
+
+  body{
+    padding-bottom:145px;
+  }
+}
+
+@media(max-width:390px){
+
+  .songActions .remove{
+    display:none;
+  }
+
+  .cover{
+    width:50px;
+    height:50px;
+    flex-basis:50px;
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<header class="header">
+
+  <div class="logo">
+    <div class="logoIcon">♫</div>
+    <div class="logoText">
+      Melvic <span>Music</span>
+    </div>
+  </div>
+
+  <button class="addBtn" id="addBtn">
+    ＋ Add Songs
+  </button>
+
+</header>
+
+
+<div class="install" id="installBox">
+
+  <div class="installText">
+    <strong>Install Melvic Music</strong>
+    <span>Use it like a real app.</span>
+  </div>
+
+  <button id="installBtn">
+    Install
+  </button>
+
+</div>
+
+
+<div class="search">
+
+  <span class="searchIcon">⌕</span>
+
+  <input
+    id="searchInput"
+    type="search"
+    placeholder="Search your music..."
+    autocomplete="off"
+  >
+
+</div>
+
+
+<section class="hero">
+
+  <div class="heroSmall">
+    YOUR OFFLINE MUSIC PLAYER
+  </div>
+
+  <h1>
+    Your music.<br>
+    Your way.
+  </h1>
+
+  <p>
+    Add music from your device and keep your personal library
+    available offline.
+  </p>
+
+</section>
+
+
+<div class="sectionHead">
+
+  <h2>Library</h2>
+
+  <span class="count" id="songCount">
+    0 songs
+  </span>
+
+</div>
+
+
+<main class="library" id="library"></main>
+
+</div>
+
+
+<input
+  id="fileInput"
+  type="file"
+  accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.flac"
+  multiple
+>
+
+
+<div class="player">
+
+  <div class="progressArea">
+
+    <span class="time" id="currentTime">
+      0:00
+    </span>
+
+    <input
+      id="progress"
+      type="range"
+      min="0"
+      max="100"
+      value="0"
+    >
+
+    <span class="time" id="duration">
+      0:00
+    </span>
+
+  </div>
+
+
+  <div class="playerMain">
+
+    <div class="playerCover" id="playerCover">
+      ♪
+    </div>
+
+
+    <div class="now">
+
+      <div class="nowTitle" id="nowTitle">
+        No song selected
+      </div>
+
+      <div class="nowArtist" id="nowArtist">
+        Add music to get started
+      </div>
+
+    </div>
+
+
+    <div class="smallControls">
+
+      <button
+        class="control"
+        id="shuffleBtn"
+        title="Shuffle">
+        ⤨
+      </button>
+
+      <button
+        class="control"
+        id="repeatBtn"
+        title="Repeat">
+        ↻
+      </button>
+
+    </div>
+
+
+    <div class="controls">
+
+      <button
+        class="control prev"
+        id="prevBtn"
+        title="Previous">
+        ◀◀
+      </button>
+
+      <button
+        class="control play"
+        id="playBtn"
+        title="Play/Pause">
+        ▶
+      </button>
+
+      <button
+        class="control next"
+        id="nextBtn"
+        title="Next">
+        ▶▶
+      </button>
+
+    </div>
+
+
+    <div class="volume">
+
+      <span>🔊</span>
+
+      <input
+        id="volume"
+        type="range"
+        min="0"
+        max="1"
+        step=".01"
+        value=".9"
+      >
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+<audio id="audio" preload="metadata"></audio>
+
+
+<script>
+
+/* =========================================================
+   DATABASE
+   ========================================================= */
+
+const DB_NAME = "MelvicMusicDB";
+const DB_VERSION = 1;
+const STORE_NAME = "songs";
+
+let db = null;
+
+function openDatabase(){
+
+  return new Promise((resolve,reject)=>{
+
+    const request =
+      indexedDB.open(DB_NAME,DB_VERSION);
+
+    request.onupgradeneeded = event => {
+
+      const database = event.target.result;
+
+      if(!database.objectStoreNames.contains(STORE_NAME)){
+
+        const store =
+          database.createObjectStore(
+            STORE_NAME,
+            {keyPath:"id"}
+          );
+
+        store.createIndex(
+          "name",
+          "name",
+          {unique:false}
+        );
+
+      }
+
+    };
+
+    request.onsuccess = () => {
+
+      db = request.result;
+      resolve(db);
+
+    };
+
+    request.onerror = () => {
+
+      reject(request.error);
+
+    };
+
+  });
+
+}
+
+
+/* =========================================================
+   DATABASE HELPERS
+   ========================================================= */
+
+function saveSong(song){
+
+  return new Promise((resolve,reject)=>{
+
+    const transaction =
+      db.transaction(STORE_NAME,"readwrite");
+
+    const store =
+      transaction.objectStore(STORE_NAME);
+
+    const request =
+      store.put(song);
+
+    request.onsuccess = () => resolve();
+
+    request.onerror = () =>
+      reject(request.error);
+
+  });
+
+}
+
+
+function getAllSongs(){
+
+  return new Promise((resolve,reject)=>{
+
+    const transaction =
+      db.transaction(STORE_NAME,"readonly");
+
+    const store =
+      transaction.objectStore(STORE_NAME);
+
+    const request =
+      store.getAll();
+
+    request.onsuccess = () =>
+      resolve(request.result);
+
+    request.onerror = () =>
+      reject(request.error);
+
+  });
+
+}
+
+
+function deleteSongFromDB(id){
+
+  return new Promise((resolve,reject)=>{
+
+    const transaction =
+      db.transaction(STORE_NAME,"readwrite");
+
+    const store =
+      transaction.objectStore(STORE_NAME);
+
+    const request =
+      store.delete(id);
+
+    request.onsuccess = () => resolve();
+
+    request.onerror = () =>
+      reject(request.error);
+
+  });
+
+}
+
+
+/* =========================================================
+   PLAYER VARIABLES
+   ========================================================= */
+
+const audio =
+  document.getElementById("audio");
+
+const fileInput =
+  document.getElementById("fileInput");
+
+const addBtn =
+  document.getElementById("addBtn");
+
+const library =
+  document.getElementById("library");
+
+const songCount =
+  document.getElementById("songCount");
+
+const searchInput =
+  document.getElementById("searchInput");
+
+const playBtn =
+  document.getElementById("playBtn");
+
+const prevBtn =
+  document.getElementById("prevBtn");
+
+const nextBtn =
+  document.getElementById("nextBtn");
+
+const shuffleBtn =
+  document.getElementById("shuffleBtn");
+
+const repeatBtn =
+  document.getElementById("repeatBtn");
+
+const progress =
+  document.getElementById("progress");
+
+const currentTime =
+  document.getElementById("currentTime");
+
+const duration =
+  document.getElementById("duration");
+
+const volume =
+  document.getElementById("volume");
+
+const playerCover =
+  document.getElementById("playerCover");
+
+const nowTitle =
+  document.getElementById("nowTitle");
+
+const nowArtist =
+  document.getElementById("nowArtist");
+
+const toast =
+  document.getElementById("toast");
+
+let songs = [];
+let currentIndex = -1;
+let currentURL = null;
+
+let shuffle = false;
+let repeat = false;
+
+
+/* =========================================================
+   LOAD LIBRARY FROM INDEXEDDB
+   ========================================================= */
+
+async function loadLibrary(){
+
+  try{
+
+    await openDatabase();
+
+    const saved =
+      await getAllSongs();
+
+    songs = saved.sort(
+      (a,b) => a.addedAt - b.addedAt
+    );
+
+    renderLibrary();
+
+  }catch(error){
+
+    console.error(error);
+
+    showToast(
+      "Storage could not be opened"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   ADD MUSIC
+   ========================================================= */
+
+addBtn.addEventListener(
+  "click",
+  () => fileInput.click()
+);
+
+
+fileInput.addEventListener(
+  "change",
+  async () => {
+
+    const files =
+      [...fileInput.files];
+
+    if(!files.length) return;
+
+    let added = 0;
+
+    for(const file of files){
+
+      if(
+        !file.type.startsWith("audio/") &&
+        !/\.(mp3|wav|m4a|aac|ogg|flac)$/i.test(file.name)
+      ){
+        continue;
+      }
+
+      const song = {
+
+        id:
+          crypto.randomUUID
+          ? crypto.randomUUID()
+          : Date.now()+"-"+Math.random(),
+
+        name:
+          cleanFileName(file.name),
+
+        artist:
+          "Local Music",
+
+        album:
+          "My Library",
+
+        blob:
+          file,
+
+        favorite:false,
+
+        addedAt:
+          Date.now() + added
+
+      };
+
+      try{
+
+        await saveSong(song);
+
+        songs.push(song);
+
+        added++;
+
+      }catch(error){
+
+        console.error(
+          "Could not save song:",
+          error
+        );
+
+      }
+
+    }
+
+    fileInput.value = "";
+
+    renderLibrary();
+
+    if(added){
+
+      showToast(
+        added === 1
+          ? "Song saved offline"
+          : added+" songs saved offline"
+      );
+
+      if(currentIndex === -1){
+
+        loadSong(0);
+
+      }
+
+    }
+
+  }
+);
+
+
+function cleanFileName(name){
+
+  return name
+    .replace(/\.[^/.]+$/,"")
+    .replace(/[_-]+/g," ")
+    .replace(/\s+/g," ")
+    .trim();
+
+}
+
+
+/* =========================================================
+   CREATE AUDIO URL
+   ========================================================= */
+
+function createSongURL(song){
+
+  if(currentURL){
+
+    URL.revokeObjectURL(currentURL);
+
+    currentURL = null;
+
+  }
+
+  currentURL =
+    URL.createObjectURL(song.blob);
+
+  return currentURL;
+
+}
+
+
+/* =========================================================
+   RENDER LIBRARY
+   ========================================================= */
+
+function renderLibrary(){
+
+  const query =
+    searchInput.value
+      .toLowerCase()
+      .trim();
+
+  const filtered =
+    songs.filter(song =>
+      song.name
+        .toLowerCase()
+        .includes(query)
+    );
+
+  songCount.textContent =
+    songs.length +
+    (songs.length === 1 ? " song" : " songs");
+
+
+  if(!filtered.length){
+
+    library.innerHTML = `
+
+      <div class="empty">
+
+        <div class="emptyIcon">
+          ${songs.length ? "⌕" : "🎵"}
+        </div>
+
+        <h3>
+          ${songs.length
+            ? "No songs found"
+            : "Your library is empty"}
+        </h3>
+
+        <p>
+          ${songs.length
+            ? "Try another search."
+            : "Tap ＋ Add Songs to choose music from your device."}
+        </p>
+
+      </div>
+
+    `;
+
+    return;
+  }
+
+
+  library.innerHTML =
+    filtered.map(song => {
+
+      const index =
+        songs.indexOf(song);
+
+      return `
+
+        <div
+          class="song ${index === currentIndex ? "active" : ""}"
+          data-index="${index}"
+        >
+
+          <div class="cover">
+            ♪
+          </div>
+
+          <div class="songInfo">
+
+            <div class="songTitle">
+              ${escapeHTML(song.name)}
+            </div>
+
+            <div class="songArtist">
+              ${escapeHTML(song.artist)}
+            </div>
+
+          </div>
+
+          <div class="songActions">
+
+            <button
+              class="iconBtn favorite ${song.favorite ? "active" : ""}"
+              data-action="favorite"
+              title="Favorite"
+            >
+              ${song.favorite ? "♥" : "♡"}
+            </button>
+
+            <button
+              class="iconBtn remove"
+              data-action="remove"
+              title="Remove"
+            >
+              ⋮
+            </button>
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
+
+}
+
+
+/* =========================================================
+   LIBRARY ACTIONS
+   ========================================================= */
+
+library.addEventListener(
+  "click",
+  async event => {
+
+    const item =
+      event.target.closest(".song");
+
+    if(!item) return;
+
+    const index =
+      Number(item.dataset.index);
+
+    const action =
+      event.target.closest("[data-action]");
+
+
+    if(action){
+
+      const type =
+        action.dataset.action;
+
+
+      if(type === "favorite"){
+
+        songs[index].favorite =
+          !songs[index].favorite;
+
+        await saveSong(songs[index]);
+
+        renderLibrary();
+
+        showToast(
+          songs[index].favorite
+            ? "Added to favorites"
+            : "Removed from favorites"
+        );
+
+        return;
+      }
+
+
+      if(type === "remove"){
+
+        const song =
+          songs[index];
+
+        const wasPlaying =
+          index === currentIndex;
+
+        await deleteSongFromDB(song.id);
+
+        songs.splice(index,1);
+
+
+        if(wasPlaying){
+
+          audio.pause();
+
+          if(currentURL){
+
+            URL.revokeObjectURL(currentURL);
+            currentURL = null;
+
+          }
+
+          audio.removeAttribute("src");
+          audio.load();
+
+          currentIndex = -1;
+
+          updatePlayer();
+
+        }else if(index < currentIndex){
+
+          currentIndex--;
+
+        }
+
+
+        renderLibrary();
+
+        showToast("Song removed");
+
+        return;
+      }
+
+    }
+
+
+    loadSong(index);
+
+  }
+);
+
+
+/* =========================================================
+   LOAD SONG
+   ========================================================= */
+
+function loadSong(index){
+
+  if(!songs.length) return;
+
+  if(index < 0)
+    index = songs.length - 1;
+
+  if(index >= songs.length)
+    index = 0;
+
+  currentIndex = index;
+
+  const song =
+    songs[currentIndex];
+
+  const url =
+    createSongURL(song);
+
+  audio.src = url;
+
+  audio.load();
+
+  updatePlayer();
+
+  renderLibrary();
+
+  updateMediaSession(song);
+
+}
+
+
+/* =========================================================
+   PLAY
+   ========================================================= */
+
+playBtn.addEventListener(
+  "click",
+  togglePlay
+);
+
+
+async function togglePlay(){
+
+  if(currentIndex === -1){
+
+    if(!songs.length){
+
+      fileInput.click();
+
+      return;
+    }
+
+    loadSong(0);
+
+  }
+
+
+  if(audio.paused){
+
+    try{
+
+      await audio.play();
+
+    }catch(error){
+
+      showToast(
+        "Tap Play again to start"
+      );
+
+    }
+
+  }else{
+
+    audio.pause();
+
+  }
+
+}
+
+
+audio.addEventListener(
+  "play",
+  () => {
+
+    playBtn.textContent = "Ⅱ";
+
+    updateMediaSessionState(
+      "playing"
+    );
+
+  }
+);
+
+
+audio.addEventListener(
+  "pause",
+  () => {
+
+    playBtn.textContent = "▶";
+
+    updateMediaSessionState(
+      "paused"
+    );
+
+  }
+);
+
+
+/* =========================================================
+   NEXT
+   ========================================================= */
+
+nextBtn.addEventListener(
+  "click",
+  nextSong
+);
+
+
+function nextSong(){
+
+  if(!songs.length) return;
+
+  let next;
+
+  if(shuffle && songs.length > 1){
+
+    do{
+
+      next =
+        Math.floor(
+          Math.random()*songs.length
+        );
+
+    }while(next === currentIndex);
+
+  }else{
+
+    next =
+      currentIndex + 1;
+
+    if(next >= songs.length)
+      next = 0;
+
+  }
+
+  loadSong(next);
+
+  audio.play().catch(()=>{});
+
+}
+
+
+/* =========================================================
+   PREVIOUS
+   ========================================================= */
+
+prevBtn.addEventListener(
+  "click",
+  previousSong
+);
+
+
+function previousSong(){
+
+  if(!songs.length) return;
+
+  if(audio.currentTime > 3){
+
+    audio.currentTime = 0;
+
+    return;
+  }
+
+  let prev =
+    currentIndex - 1;
+
+  if(prev < 0)
+    prev = songs.length - 1;
+
+  loadSong(prev);
+
+  audio.play().catch(()=>{});
+
+}
+
+
+/* =========================================================
+   AUTO NEXT
+   ========================================================= */
+
+audio.addEventListener(
+  "ended",
+  () => {
+
+    if(repeat){
+
+      audio.currentTime = 0;
+
+      audio.play().catch(()=>{});
+
+      return;
+    }
+
+    nextSong();
+
+  }
+);
+
+
+/* =========================================================
+   SHUFFLE
+   ========================================================= */
+
+shuffleBtn.addEventListener(
+  "click",
+  () => {
+
+    shuffle = !shuffle;
+
+    shuffleBtn.classList.toggle(
+      "activeControl",
+      shuffle
+    );
+
+    showToast(
+      shuffle
+        ? "Shuffle on"
+        : "Shuffle off"
+    );
+
+  }
+);
+
+
+/* =========================================================
+   REPEAT
+   ========================================================= */
+
+repeatBtn.addEventListener(
+  "click",
+  () => {
+
+    repeat = !repeat;
+
+    repeatBtn.classList.toggle(
+      "activeControl",
+      repeat
+    );
+
+    showToast(
+      repeat
+        ? "Repeat on"
+        : "Repeat off"
+    );
+
+  }
+);
+
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+
+audio.addEventListener(
+  "loadedmetadata",
+  () => {
+
+    if(Number.isFinite(audio.duration)){
+
+      duration.textContent =
+        formatTime(audio.duration);
+
+    }
+
+  }
+);
+
+
+audio.addEventListener(
+  "timeupdate",
+  () => {
+
+    if(!Number.isFinite(audio.duration))
+      return;
+
+    progress.value =
+      (audio.currentTime /
+       audio.duration) * 100;
+
+    currentTime.textContent =
+      formatTime(audio.currentTime);
+
+  }
+);
+
+
+progress.addEventListener(
+  "input",
+  () => {
+
+    if(!Number.isFinite(audio.duration))
+      return;
+
+    audio.currentTime =
+      (Number(progress.value)/100) *
+      audio.duration;
+
+  }
+);
+
+
+function formatTime(seconds){
+
+  if(!Number.isFinite(seconds))
+    return "0:00";
+
+  const minutes =
+    Math.floor(seconds/60);
+
+  const secs =
+    Math.floor(seconds%60);
+
+  return (
+    minutes +
+    ":" +
+    String(secs).padStart(2,"0")
+  );
+
+}
+
+
+/* =========================================================
+   VOLUME
+   ========================================================= */
+
+audio.volume = .9;
+
+volume.addEventListener(
+  "input",
+  () => {
+
+    audio.volume =
+      Number(volume.value);
+
+  }
+);
+
+
+/* =========================================================
+   PLAYER UI
+   ========================================================= */
+
+function updatePlayer(){
+
+  if(currentIndex === -1){
+
+    nowTitle.textContent =
+      "No song selected";
+
+    nowArtist.textContent =
+      "Add music to get started";
+
+    playerCover.innerHTML =
+      "♪";
+
+    return;
+
+  }
+
+  const song =
+    songs[currentIndex];
+
+  nowTitle.textContent =
+    song.name;
+
+  nowArtist.textContent =
+    song.artist;
+
+  playerCover.innerHTML =
+    "♪";
+
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+searchInput.addEventListener(
+  "input",
+  renderLibrary
+);
+
+
+/* =========================================================
+   MEDIA SESSION
+   NOTIFICATION + LOCK SCREEN
+   ========================================================= */
+
+function updateMediaSession(song){
+
+  if(!("mediaSession" in navigator))
+    return;
+
+  try{
+
+    navigator.mediaSession.metadata =
+      new MediaMetadata({
+
+        title:
+          song.name,
+
+        artist:
+          song.artist,
+
+        album:
+          "Melvic Music"
+
+      });
+
+  }catch(error){}
+
+}
+
+
+function updateMediaSessionState(state){
+
+  if(!("mediaSession" in navigator))
+    return;
+
+  try{
+
+    navigator.mediaSession.playbackState =
+      state;
+
+  }catch(error){}
+
+}
+
+
+if("mediaSession" in navigator){
+
+  try{
+
+    navigator.mediaSession.setActionHandler(
+      "play",
+      () => audio.play().catch(()=>{})
+    );
+
+    navigator.mediaSession.setActionHandler(
+      "pause",
+      () => audio.pause()
+    );
+
+    navigator.mediaSession.setActionHandler(
+      "nexttrack",
+      nextSong
+    );
+
+    navigator.mediaSession.setActionHandler(
+      "previoustrack",
+      previousSong
+    );
+
+    navigator.mediaSession.setActionHandler(
+      "seekbackward",
+      details => {
+
+        audio.currentTime =
+          Math.max(
+            0,
+            audio.currentTime -
+            (details.seekOffset || 10)
+          );
+
+      }
+    );
+
+    navigator.mediaSession.setActionHandler(
+      "seekforward",
+      details => {
+
+        audio.currentTime =
+          Math.min(
+            audio.duration || Infinity,
+            audio.currentTime +
+            (details.seekOffset || 10)
+          );
+
+      }
+    );
+
+  }catch(error){}
+
+}
+
+
+/* =========================================================
+   INSTALLABLE PWA
+   ========================================================= */
+
+let deferredInstallPrompt = null;
+
+window.addEventListener(
+  "beforeinstallprompt",
+  event => {
+
+    event.preventDefault();
+
+    deferredInstallPrompt =
+      event;
+
+    document
+      .getElementById("installBox")
+      .classList.add("show");
+
+  }
+);
+
+
+document
+  .getElementById("installBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      if(!deferredInstallPrompt)
+        return;
+
+      deferredInstallPrompt.prompt();
+
+      await deferredInstallPrompt.userChoice;
+
+      deferredInstallPrompt = null;
+
+      document
+        .getElementById("installBox")
+        .classList.remove("show");
+
+    }
+  );
+
+
+/* =========================================================
+   SERVICE WORKER
+   ========================================================= */
+
+if("serviceWorker" in navigator){
+
+  window.addEventListener(
+    "load",
+    () => {
+
+      navigator.serviceWorker
+        .register("./sw.js")
+        .catch(error =>
+          console.log(
+            "Service Worker:",
+            error
+          )
+        );
+
+    }
+  );
+
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+let toastTimer;
+
+function showToast(message){
+
+  toast.textContent =
+    message;
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer =
+    setTimeout(
+      () => {
+        toast.classList.remove("show");
+      },
+      2200
+    );
+
+}
+
+
+/* =========================================================
+   ESCAPE HTML
+   ========================================================= */
+
+function escapeHTML(text){
+
+  return String(text)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+/* =========================================================
+   KEYBOARD
+   ========================================================= */
+
+document.addEventListener(
+  "keydown",
+  event => {
+
+    if(
+      event.target.tagName === "INPUT" ||
+      event.target.tagName === "TEXTAREA"
+    ) return;
+
+
+    if(event.code === "Space"){
+
+      event.preventDefault();
+
+      togglePlay();
+
+    }
+
+
+    if(event.code === "ArrowRight")
+      nextSong();
+
+
+    if(event.code === "ArrowLeft")
+      previousSong();
+
+  }
+);
+
+
+/* =========================================================
+   START
+   ========================================================= */
+
+loadLibrary();
+
+</script>
+
+</body>
+</html>
